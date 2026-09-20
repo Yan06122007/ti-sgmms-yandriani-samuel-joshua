@@ -1,0 +1,22 @@
+# Compilados y artefactos de build
+*.class
+target/
+out/
+build/
+bin/
+
+# IntelliJ / Visual Paradigm
+.idea/
+*.iml
+*.iws
+.vp-project.uid
+*.bak
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
