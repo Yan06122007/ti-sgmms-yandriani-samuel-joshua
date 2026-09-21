@@ -2,24 +2,21 @@
 
 **Proyecto:** SGMMS — Tarea Integradora, Entrega 1 (Ingeniería de Software II)
 **Equipo:** Yandriani Castañeda, Samuel Sepúlveda, Joshua García
+**Elaborado en:** Visual Paradigm Professional (Joshua García — Universidad Icesi)
 
-> ⚠️ Este documento contiene el **diseño completo y detallado** del diagrama de clases
-> (clases, atributos, métodos, tipos, relaciones y multiplicidades) que el equipo debe
-> **reconstruir en Visual Paradigm**, siguiendo exactamente lo especificado aquí. La
-> imagen `diagrama-clases.png` (incluida en esta carpeta) sirve como guía visual de
-> referencia mientras se dibuja el diagrama definitivo en la herramienta; el archivo
-> `.vpp` y su exportación a PDF/imagen deben generarse desde Visual Paradigm y
-> subirse junto con este documento, tal como pide el estándar del repositorio.
-
-![Diagrama de clases de referencia](diagrama-clases.png)
+![Diagrama de clases](diagrama-clases.png)
 
 ## Alcance
 
 El diagrama corresponde **únicamente al paquete `model`**, incluyendo la clase
-`Controller` (aquí llamada `SGMMSController`), y cubre exclusivamente los cuatro
-requerimientos funcionales de esta entrega (RF1–RF4). No incluye mapa, rutas,
-persistencia en archivos ni concurrencia: esos elementos se incorporarán en
-entregas posteriores.
+`Controller` (aquí `SGMMSController`), y cubre los cuatro requerimientos
+funcionales de esta entrega (RF1–RF4). No incluye mapa, rutas, persistencia en
+archivos ni concurrencia: se incorporarán en entregas posteriores.
+
+> ⚠️ **Antes de subir esta entrega**, revisen con Joshua los puntos listados en
+> la sección *"Consideraciones antes de entregar"* al final de este documento:
+> son pequeños typos del diagrama que la rúbrica puede penalizar en el criterio
+> de UML ("notación correcta, legible y organizado") si no se corrigen.
 
 ## Enumeraciones
 
@@ -76,9 +73,9 @@ incidente (RF4).
 - `+ getTipo() : TipoVehiculo`
 - `+ getEstado() : EstadoVehiculo`
 - `+ getIncidenteAsignado() : Incidente`
-- `+ setEstado(estado: EstadoVehiculo) : void` — valida transiciones consistentes (RF3).
+- `+ setEstado(estado: EstadoVehiculo) : void`
 - `+ estaDisponible() : boolean`
-- `+ esCompatibleCon(incidente: Incidente) : boolean` — aplica las reglas: patrulla→robo/apoyo accidente, ambulancia→accidente, camión de bomberos→incendio (RF4).
+- `+ esCompatibleCon(incidente: Incidente) : boolean` — reglas: patrulla→robo/apoyo accidente, ambulancia→accidente, camión de bomberos→incendio (RF4).
 - `+ asignarIncidente(incidente: Incidente) : void`
 - `+ liberar() : void` — vuelve el vehículo a `DISPONIBLE` y limpia `incidenteAsignado`.
 
@@ -86,13 +83,13 @@ incidente (RF4).
 Encapsula la colección de incidentes y las operaciones de RF1 y RF2.
 
 **Atributos**
-- `- incidentes : List<Incidente>`
+- `- listaIncidentes : List<Incidente>`
 
 **Métodos**
 - `+ registrarIncidente(incidente: Incidente) : void`
 - `+ consultarIncidente(id: String) : Incidente` — lanza `IncidenteNoEncontradoException` si no existe.
 - `+ actualizarIncidente(id: String, ...) : void`
-- `+ obtenerIncidentePrioritario() : Incidente` — aplica el orden definido en `Incidente.compareTo`.
+- `+ obtenerIncidentePrioritario() : Incidente`
 - `+ listarIncidentesActivos() : List<Incidente>`
 
 ### `GestorVehiculos`
@@ -100,13 +97,13 @@ Encapsula la colección de vehículos y las operaciones de RF3, y apoya a RF4
 proponiendo candidatos.
 
 **Atributos**
-- `- vehiculos : List<Vehiculo>`
+- `- listaVehiculos : List<Vehiculo>`
 
 **Métodos**
 - `+ registrarVehiculo(vehiculo: Vehiculo) : void`
 - `+ consultarVehiculo(id: String) : Vehiculo` — lanza `VehiculoNoEncontradoException` si no existe.
 - `+ actualizarEstado(id: String, estado: EstadoVehiculo) : void`
-- `+ buscarCandidatoDisponible(incidente: Incidente) : Vehiculo` — retorna el primer vehículo disponible y compatible con el incidente.
+- `+ buscarCandidatoDisponible(incidente: Incidente) : Vehiculo`
 
 ### `SGMMSController`
 Clase de control (patrón MVC) que orquesta los casos de uso de esta entrega,
@@ -117,6 +114,10 @@ delegando en `GestorIncidentes` y `GestorVehiculos`.
 - `- gestorVehiculos : GestorVehiculos`
 
 **Métodos**
+- `+ getGestorIncidentes() : GestorIncidentes`
+- `+ setGestorIncidentes(gestorIncidentes: GestorIncidentes) : void`
+- `+ getGestorVehiculos() : GestorVehiculos`
+- `+ setGestorVehiculos(gestorVehiculos: GestorVehiculos) : void`
 - `+ registrarIncidente(...) : void`
 - `+ consultarIncidente(id: String) : Incidente`
 - `+ consultarIncidentePrioritario() : Incidente`
@@ -153,3 +154,44 @@ delegando en `GestorIncidentes` y `GestorVehiculos`.
 | RF2 – Gestionar la prioridad de los incidentes | `Incidente.compareTo`, `GestorIncidentes.obtenerIncidentePrioritario`, `Incidente.marcarResuelto`, `SGMMSController.consultarIncidentePrioritario` |
 | RF3 – Gestionar vehículos de atención | `Vehiculo` (constructor, getters, `setEstado`, `estaDisponible`), `GestorVehiculos` (`registrarVehiculo`, `consultarVehiculo`, `actualizarEstado`) |
 | RF4 – Asignar vehículos a incidentes | `Vehiculo.esCompatibleCon`, `GestorVehiculos.buscarCandidatoDisponible`, `Incidente.asignarVehiculo`, `Vehiculo.asignarIncidente`, `SGMMSController.proponerVehiculoCandidato`, `SGMMSController.asignarVehiculoAIncidente`, `AsignacionInvalidaException` |
+
+---
+
+## Consideraciones antes de entregar
+
+La versión actual del diagrama en Visual Paradigm (imagen de arriba) tiene
+algunos detalles menores que conviene corregir directamente ahí antes de subir
+la entrega definitiva — el texto de este documento ya asume los nombres
+correctos, pero **el diagrama todavía no**:
+
+1. **Atributos de las colecciones**: en `GestorVehiculos` el atributo aparece
+   como `LiistVehiculos` y en `GestorIncidentes` como `ListIncidente`. Deberían
+   ser `listaVehiculos : List<Vehiculo>` y `listaIncidentes : List<Incidente>`
+   respectivamente (nombre en minúscula inicial + tipo genérico visible).
+2. **Método de actualización de incidentes**: aparece como
+   `actualization(String id) : void`. Debería llamarse `actualizarIncidente` y
+   recibir los datos a actualizar, igual que `actualizarEstado` en
+   `GestorVehiculos`.
+3. **Nombres de get/set del Controller**: aparecen como `getGestorincidentes`
+   / `setGestorincidentes` / `getGestorvehiculos` / `setGestorvehiculos` (con
+   minúscula donde debería ir mayúscula: `GestorIncidentes`,
+   `GestorVehiculos`), y el tipo de los atributos también aparece en minúscula
+   (`Gestorincidentes`, `Gestorvehiculos`). Deben coincidir exactamente con el
+   nombre de la clase (`GestorIncidentes`, `GestorVehiculos`).
+4. **Método `registrarIncident()`**: le falta la "e" final — debería ser
+   `registrarIncidente(...)`, y debería llevar los parámetros del incidente a
+   registrar (igual que `registrarVehiculo`).
+5. **Método `ConsultarIncidente`**: empieza con mayúscula, debería ser
+   `consultarIncidente` (los demás métodos siguen la convención camelCase con
+   minúscula inicial), y su tipo de retorno debe ser `Incidente` (con
+   mayúscula, es el nombre de la clase).
+6. **Nombre de la excepción de incidentes**: `IncidenteNoEncontradoException`
+   usa el sufijo en inglés "Exception", mientras que las otras dos
+   (`AsignacionInvalidaExcepcion`, `VehiculoNoEncontradoExcepcion` en el
+   diagrama) usan "Excepcion" en español. Elijan un solo idioma para el sufijo
+   y aplíquenlo a las tres clases de excepción (este documento usa
+   `...Exception` en las tres, siguiendo la convención de Java).
+
+Ninguno de estos puntos cambia el diseño ni la trazabilidad con los
+requerimientos — son ajustes de ortografía/nomenclatura en Visual Paradigm
+para que el diagrama sea coherente consigo mismo y con el resto de la entrega.
