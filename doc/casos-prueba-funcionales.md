@@ -43,7 +43,7 @@
 
 ---
 
-### Instrucciones para el Estudiante (verificadas en este diseño)
+### Instrucciones (verificadas en este diseño)
 - El nombre del caso describe claramente el comportamiento verificado.
 - Cada caso está asociado a un requerimiento existente (RF1–RF4).
 - El resultado esperado es verificable y específico (estados, mensajes y excepciones concretas).
